@@ -1,5 +1,5 @@
 # Runtime dependencies (pinned for reproducible builds; see pyproject.toml for ranges)
-fastapi==0.163.1
+fastapi==0.162.5
 uvicorn[standard]==0.54.0
 rich==15.0.0
 argon2-cffi==25.1.0
