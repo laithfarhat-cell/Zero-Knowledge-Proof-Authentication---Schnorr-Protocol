@@ -1,0 +1,41 @@
+services:
+  server:
+    build: .
+    image: schnorr-zkp-auth:latest
+    container_name: schnorr-verifier
+    ports:
+      - "8000:8000"
+    environment:
+      SCHNORR_DB_PATH: /data/schnorr_auth.db
+      SCHNORR_GROUP: rfc3526-2048
+      SCHNORR_LOG_LEVEL: INFO
+      # Comma-separated list of allowed CORS origins, or * for demos:
+      SCHNORR_CORS_ORIGINS: "*"
+    volumes:
+      - schnorr-data:/data
+    restart: unless-stopped
+
+  # Interactive Prover CLI (optional): `docker compose run --rm client login alice`
+  client:
+    build: .
+    image: schnorr-zkp-auth:latest
+    profiles: ["client"]
+    depends_on:
+      server:
+        condition: service_started
+    environment:
+      SCHNORR_SERVER: http://server:8000
+    entrypoint: ["python", "-m", "client.cli", "--server", "http://server:8000"]
+    command: ["params"]
+    stdin_open: true
+    tty: true
+
+  # Attack lab (optional): `docker compose run --rm lab`
+  lab:
+    build: .
+    image: schnorr-zkp-auth:latest
+    profiles: ["lab"]
+    command: ["python", "-m", "simulation.mitm_lab"]
+
+volumes:
+  schnorr-data:

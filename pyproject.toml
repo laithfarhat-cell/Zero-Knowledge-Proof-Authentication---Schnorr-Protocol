@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "schnorr-zkp-auth"
+version = "1.0.0"
+description = "Production-grade, educational Schnorr zero-knowledge-proof authentication: FastAPI verifier, rich CLI prover, adversarial MITM lab, transparent from-scratch finite-field arithmetic."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Security Engineering" }]
+keywords = ["zero-knowledge", "schnorr", "zkp", "authentication", "cryptography", "fastapi"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security :: Cryptography",
+]
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn[standard]>=0.29",
+    "rich>=13.7",
+    "argon2-cffi>=23.1",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.urls]
+Repository = "https://github.com/laithfarhat-cell/Zero-Knowledge-Proof-Authentication---Schnorr-Protocol"
+
+[project.scripts]
+schnorr-server = "server.api:main"
+schnorr-cli = "client.cli:main"
+schnorr-mitm-lab = "simulation.mitm_lab:main"
+
+[tool.setuptools]
+packages = ["core", "server", "client", "simulation"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
